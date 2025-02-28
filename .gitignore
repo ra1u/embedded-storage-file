@@ -1,0 +1,6 @@
+/target
+.vscode
+target
+*.nor
+Cargo.lock
+*.backup
