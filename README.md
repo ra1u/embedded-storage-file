@@ -1,3 +1,5 @@
+[![Crates.io](https://img.shields.io/crates/v/embedded-storage-file.svg)](https://crates.io/crates/embedded-storage-file)
+[![Released API docs](https://docs.rs/embedded-storage-file/badge.svg)](https://docs.rs/embedded-storage-file)
 
 # embedded-storage-file
 
