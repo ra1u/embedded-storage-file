@@ -3,9 +3,9 @@
 
 # embedded-storage-file
 
-Library exposes traits from [embedded_storage] and [embedded_storage_async]. 
+Library exposes traits from [embedded_storage](https://docs.rs/embedded-storage) and [embedded_storage_async](https://docs.rs/embedded-storage-async).
 Exposed interface works as NOR flash where file is used as a storage medium.
-Under the hood we use memory mapped file from [memmap2].
+Under the hood we use memory mapped file from [memmap2](https://docs.rs/memmap2).
 
 Interface for using just in-memory (aka RAM) is also available.
 
@@ -40,4 +40,4 @@ std::fs::remove_file(path).unwrap();
 
 # other examples
 
-For other usecase examples check `tests/integration_test.rs`
+For other usecase examples check [tests/integration_test.rs](https://github.com/ra1u/embedded-storage-file/blob/master/tests/integration_test.rs).
