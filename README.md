@@ -41,3 +41,7 @@ std::fs::remove_file(path).unwrap();
 # other examples
 
 For other usecase examples check [tests/integration_test.rs](https://github.com/ra1u/embedded-storage-file/blob/master/tests/integration_test.rs).
+
+# Changelog
+
+See [CHANGELOG.md](https://github.com/ra1u/embedded-storage-file/blob/master/CHANGELOG.md) for release notes.
