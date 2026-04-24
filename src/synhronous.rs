@@ -13,6 +13,7 @@ use std::usize;
 pub type Error = embedded_storage::nor_flash::NorFlashErrorKind;
 
 /// Structure representing a NOR flash memory with a buffer backend.
+#[derive(Debug)]
 pub struct NorMemory<
     B: BufferBackend,
     const READ_SIZE: usize,
@@ -51,6 +52,7 @@ pub trait BufferBackend {
 }
 
 /// Structure representing a NOR storage with a buffer backend.
+#[derive(Debug)]
 pub struct NorStorage<
     B: BufferBackend,
     const READ_SIZE: usize,

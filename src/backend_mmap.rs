@@ -1,6 +1,7 @@
 use crate::synhronous::{BufferBackend, Error, NorMemory};
 use memmap2;
 
+#[derive(Debug)]
 pub struct MmapFile {
     pub file: std::fs::File,
     pub mmap: memmap2::MmapMut,

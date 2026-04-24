@@ -7,6 +7,7 @@ use embedded_storage_async::nor_flash::MultiwriteNorFlash as MultiwriteNorFlashA
 use embedded_storage_async::nor_flash::NorFlash as NorFlashAsync;
 use embedded_storage_async::nor_flash::ReadNorFlash as ReadNorFlashAsync;
 
+#[derive(Debug)]
 pub struct NorMemoryAsync<NMS> {
     nor_memory_sync: NMS,
 }
