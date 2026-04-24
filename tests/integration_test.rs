@@ -4,7 +4,6 @@ use embedded_storage_async::nor_flash::ReadNorFlash;
 use embedded_storage_file::{NorMemoryAsync, NorMemoryInFile, NorMemoryInram};
 use rand::Rng;
 use rand::SeedableRng;
-use tokio;
 
 #[test]
 fn test_inmemory() {

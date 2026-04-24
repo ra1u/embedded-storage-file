@@ -1,5 +1,4 @@
 use crate::synhronous::{BufferBackend, Error, NorMemory};
-use memmap2;
 
 #[derive(Debug)]
 pub struct MmapFile {
@@ -22,13 +21,12 @@ impl<const READ_SIZE: usize, const WRITE_SIZE: usize, const ERASE_SIZE: usize>
             .read(true)
             .write(true)
             .create(true)
+            .truncate(false)
             .open(path)?;
         file.set_len(size as u64)?;
         let mut mmap = unsafe { memmap2::MmapOptions::new().map_mut(&file)? };
         if is_new {
-            for i in 0..size {
-                mmap[i] = 0xFF;
-            }
+            mmap[..size].fill(0xFF);
         }
         Ok(Self {
             buffer: MmapFile { file, mmap },

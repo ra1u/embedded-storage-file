@@ -1,9 +1,6 @@
-use embedded_storage;
 use embedded_storage::nor_flash::NorFlash;
 use embedded_storage::nor_flash::ReadNorFlash;
 use embedded_storage::nor_flash::RmwNorFlashStorage;
-
-use std::usize;
 
 // This module provides an implementation of a NOR flash memory storage
 // using a buffer backend. It includes structures and traits to handle
@@ -110,10 +107,10 @@ impl<B: BufferBackend, const READ_SIZE: usize, const WRITE_SIZE: usize, const ER
 
     /// Erases data in the NOR flash memory from the specified range.
     fn erase(&mut self, from: u32, to: u32) -> Result<(), Error> {
-        if from as usize % ERASE_SIZE != 0 {
+        if !(from as usize).is_multiple_of(ERASE_SIZE) {
             return Err(Error::NotAligned);
         }
-        if to as usize % ERASE_SIZE != 0 {
+        if !(to as usize).is_multiple_of(ERASE_SIZE) {
             return Err(Error::NotAligned);
         }
         if to < from {
@@ -133,9 +130,7 @@ impl<B: BufferBackend, const READ_SIZE: usize, const WRITE_SIZE: usize, const ER
                     // this is not expected
                     return Err(Error::OutOfBounds);
                 }
-                for i in 0..len {
-                    data[i] = 0xFF;
-                }
+                data[..len].fill(0xFF);
                 Ok(())
             })
     }
