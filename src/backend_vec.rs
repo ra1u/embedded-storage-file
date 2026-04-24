@@ -1,4 +1,4 @@
-use crate::synhronous::{NorMemory, BufferBackend, Error};
+use crate::synhronous::{BufferBackend, Error, NorMemory};
 use std::vec::Vec;
 
 pub type NorMemoryInram<const READ_SIZE: usize, const WRITE_SIZE: usize, const ERASE_SIZE: usize> =
