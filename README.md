@@ -11,6 +11,8 @@ Interface for using just in-memory (aka RAM) is also available.
 
 Main use case is for testing and development purpose, so that we can mock NOR storage.
 
+Both backends implement `MultiwriteNorFlash` (sync and async).
+
 
 ## In file example
 

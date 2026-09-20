@@ -150,6 +150,12 @@ impl<B: BufferBackend, const READ_SIZE: usize, const WRITE_SIZE: usize, const ER
 }
 
 impl<B: BufferBackend, const READ_SIZE: usize, const WRITE_SIZE: usize, const ERASE_SIZE: usize>
+    embedded_storage::nor_flash::MultiwriteNorFlash
+    for NorMemory<B, READ_SIZE, WRITE_SIZE, ERASE_SIZE>
+{
+}
+
+impl<B: BufferBackend, const READ_SIZE: usize, const WRITE_SIZE: usize, const ERASE_SIZE: usize>
     embedded_storage::ReadStorage for NorStorage<B, READ_SIZE, WRITE_SIZE, ERASE_SIZE>
 {
     type Error = embedded_storage::nor_flash::NorFlashErrorKind;

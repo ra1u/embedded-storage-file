@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- `MultiwriteNorFlash` implementation (sync and async) for `NorMemory`, and therefore
+  for `NorMemoryInram`, `NorMemoryInFile` and their `NorMemoryAsync` wrappers.
+  This allows using them with `RmwMultiwriteNorFlashStorage` and other consumers
+  that require multiwrite-capable NOR flash.
+
 ## [0.2.0] - 2026-04-24
 
 ### Added
@@ -39,5 +47,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   for [`embedded-storage`](https://docs.rs/embedded-storage) and
   [`embedded-storage-async`](https://docs.rs/embedded-storage-async).
 
+[Unreleased]: https://github.com/ra1u/embedded-storage-file/compare/v0.2.0...HEAD
 [0.2.0]: https://github.com/ra1u/embedded-storage-file/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/ra1u/embedded-storage-file/releases/tag/v0.1.0

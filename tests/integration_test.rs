@@ -1,6 +1,6 @@
+use embedded_storage::nor_flash as nor_sync;
 use embedded_storage::{ReadStorage, Storage};
-use embedded_storage_async::nor_flash::NorFlash;
-use embedded_storage_async::nor_flash::ReadNorFlash;
+use embedded_storage_async::nor_flash as nor_async;
 use embedded_storage_file::{NorMemoryAsync, NorMemoryInFile, NorMemoryInram};
 use rand::Rng;
 use rand::SeedableRng;
@@ -49,9 +49,13 @@ async fn test_async_mem() {
     let nor = NorMemoryInram::<256, 256, 256>::new(mem_len);
     let mut anor = NorMemoryAsync::new(nor);
     let vin = rand_vector(mem_len, rand::rng().random());
-    anor.write(0, &vin).await.unwrap();
+    nor_async::NorFlash::write(&mut anor, 0, &vin)
+        .await
+        .unwrap();
     let mut vread = vec![0u8; mem_len];
-    anor.read(0, &mut vread).await.unwrap();
+    nor_async::ReadNorFlash::read(&mut anor, 0, &mut vread)
+        .await
+        .unwrap();
     assert_eq!(vin, vread);
 }
 
@@ -62,11 +66,35 @@ async fn test_async_infile() {
     let nor = NorMemoryInFile::<256, 256, 256>::new(path, 4096).unwrap();
     let mut anor = NorMemoryAsync::new(nor);
     let vin = rand_vector(mem_len, rand::rng().random());
-    anor.write(0, &vin).await.unwrap();
+    nor_async::NorFlash::write(&mut anor, 0, &vin)
+        .await
+        .unwrap();
     let mut vread = vec![0u8; mem_len];
-    anor.read(0, &mut vread).await.unwrap();
+    nor_async::ReadNorFlash::read(&mut anor, 0, &mut vread)
+        .await
+        .unwrap();
     assert_eq!(vin, vread);
     std::fs::remove_file(path).unwrap();
+}
+
+#[test]
+fn test_multiwrite_storage_sync() {
+    let mem_len = 4096_usize;
+    let nor = NorMemoryInram::<256, 256, 256>::new(mem_len);
+    let mut merge_buffer = vec![0u8; 256];
+    let mut storage = nor_sync::RmwMultiwriteNorFlashStorage::new(nor, &mut merge_buffer);
+
+    let vin = rand_vector(mem_len, 11);
+    storage.write(0, &vin).unwrap();
+    let mut vread = vec![0u8; mem_len];
+    storage.read(0, &mut vread).unwrap();
+    assert_eq!(vin, vread);
+
+    // overwrite with different data; RMW storage must erase where needed
+    let vin2 = rand_vector(mem_len, 12);
+    storage.write(0, &vin2).unwrap();
+    storage.read(0, &mut vread).unwrap();
+    assert_eq!(vin2, vread);
 }
 
 // Generate a random vector of bytes given a size and a seed.
