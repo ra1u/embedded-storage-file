@@ -1,6 +1,7 @@
-use embedded_storage::nor_flash as nor_sync;
+use embedded_storage::nor_flash::RmwMultiwriteNorFlashStorage;
 use embedded_storage::{ReadStorage, Storage};
-use embedded_storage_async::nor_flash as nor_async;
+use embedded_storage_async::nor_flash::NorFlash as NorFlashAsync;
+use embedded_storage_async::nor_flash::ReadNorFlash as ReadNorFlashAsync;
 use embedded_storage_file::{NorMemoryAsync, NorMemoryInFile, NorMemoryInram};
 use rand::Rng;
 use rand::SeedableRng;
@@ -49,13 +50,9 @@ async fn test_async_mem() {
     let nor = NorMemoryInram::<256, 256, 256>::new(mem_len);
     let mut anor = NorMemoryAsync::new(nor);
     let vin = rand_vector(mem_len, rand::rng().random());
-    nor_async::NorFlash::write(&mut anor, 0, &vin)
-        .await
-        .unwrap();
+    anor.write(0, &vin).await.unwrap();
     let mut vread = vec![0u8; mem_len];
-    nor_async::ReadNorFlash::read(&mut anor, 0, &mut vread)
-        .await
-        .unwrap();
+    anor.read(0, &mut vread).await.unwrap();
     assert_eq!(vin, vread);
 }
 
@@ -66,13 +63,9 @@ async fn test_async_infile() {
     let nor = NorMemoryInFile::<256, 256, 256>::new(path, 4096).unwrap();
     let mut anor = NorMemoryAsync::new(nor);
     let vin = rand_vector(mem_len, rand::rng().random());
-    nor_async::NorFlash::write(&mut anor, 0, &vin)
-        .await
-        .unwrap();
+    anor.write(0, &vin).await.unwrap();
     let mut vread = vec![0u8; mem_len];
-    nor_async::ReadNorFlash::read(&mut anor, 0, &mut vread)
-        .await
-        .unwrap();
+    anor.read(0, &mut vread).await.unwrap();
     assert_eq!(vin, vread);
     std::fs::remove_file(path).unwrap();
 }
@@ -82,7 +75,7 @@ fn test_multiwrite_storage_sync() {
     let mem_len = 4096_usize;
     let nor = NorMemoryInram::<256, 256, 256>::new(mem_len);
     let mut merge_buffer = vec![0u8; 256];
-    let mut storage = nor_sync::RmwMultiwriteNorFlashStorage::new(nor, &mut merge_buffer);
+    let mut storage = RmwMultiwriteNorFlashStorage::new(nor, &mut merge_buffer);
 
     let vin = rand_vector(mem_len, 11);
     storage.write(0, &vin).unwrap();
