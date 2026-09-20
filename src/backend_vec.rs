@@ -7,9 +7,10 @@ pub type NorMemoryInram<const READ_SIZE: usize, const WRITE_SIZE: usize, const E
 impl<const READ_SIZE: usize, const WRITE_SIZE: usize, const ERASE_SIZE: usize>
     NorMemoryInram<READ_SIZE, WRITE_SIZE, ERASE_SIZE>
 {
+    /// Creates a new in-memory NOR flash of `size` bytes, initialised to the erased state (`0xFF`).
     pub fn new(size: usize) -> Self {
         Self {
-            buffer: vec![0; size],
+            buffer: vec![0xFF; size],
         }
     }
 }

@@ -11,6 +11,8 @@ Interface for using just in-memory (aka RAM) is also available.
 
 Main use case is for testing and development purpose, so that we can mock NOR storage.
 
+Writes follow real NOR semantics: bits can only change from 1 to 0 until the block is erased.
+
 
 ## In file example
 

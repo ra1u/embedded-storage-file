@@ -143,7 +143,10 @@ impl<B: BufferBackend, const READ_SIZE: usize, const WRITE_SIZE: usize, const ER
         }
         self.buffer
             .with_data_mut(offset as usize, offset as usize + data.len(), |buf| {
-                buf.copy_from_slice(data);
+                // Follows NOR flash semantics so bits can only change from 1 to 0.
+                for (b, d) in buf.iter_mut().zip(data) {
+                    *b &= *d;
+                }
                 Ok(())
             })
     }
