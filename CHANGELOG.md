@@ -7,18 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-09-21
+
 ### Added
+
 - `MultiwriteNorFlash` implementation (sync and async) for `NorMemory`, and therefore
   for `NorMemoryInram`, `NorMemoryInFile` and their `NorMemoryAsync` wrappers.
   This allows using them with `RmwMultiwriteNorFlashStorage` and other consumers
   that require multiwrite-capable NOR flash.
+
 ### Changed
+
 - `NorFlash::write` now follows NOR semantics and stores the
   bitwise AND of the existing content and the written data (bits can only change
   from 1 to 0). Previously it overwrote the content unconditionally. Erase a block
   to set bits back to 1.
 - `NorMemoryInram::new` now initialises memory to the erased
   value `0xFF` instead of `0x00`, matching `NorMemoryInFile`.
+- Updated dependency requirements to `embedded-storage = "0.3.2"`,
+  `embedded-storage-async = "0.4.2"`, and `memmap2 = "0.9.11"`.
+- Updated dev-dependencies to `rand = "0.10.3"` and `tokio = "1.53.1"`.
 
 ## [0.2.0] - 2026-04-24
 
@@ -54,6 +62,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   for [`embedded-storage`](https://docs.rs/embedded-storage) and
   [`embedded-storage-async`](https://docs.rs/embedded-storage-async).
 
-[Unreleased]: https://github.com/ra1u/embedded-storage-file/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/ra1u/embedded-storage-file/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/ra1u/embedded-storage-file/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/ra1u/embedded-storage-file/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/ra1u/embedded-storage-file/releases/tag/v0.1.0

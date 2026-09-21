@@ -15,6 +15,23 @@ Both backends implement `MultiwriteNorFlash` (sync and async).
 
 Writes follow real NOR semantics: bits can only change from 1 to 0 until the block is erased.
 
+## Usage
+
+Add the crate to your `Cargo.toml` (requires Rust 1.87 or later):
+
+```toml
+[dependencies]
+embedded-storage-file = "0.3.0"
+```
+
+## Upgrading to 0.3.0
+
+Direct `NorFlash::write` calls now store the bitwise AND of the existing and written
+data. Erase the affected block before writing if any bits need to change from 0 to 1.
+The `.storage()` adapter continues to handle erasing automatically.
+New in-memory storage now starts erased (`0xFF`) instead of zero-filled.
+Both backends now support `MultiwriteNorFlash`, including through `NorMemoryAsync`.
+
 ## In file example
 
 ```
