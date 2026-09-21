@@ -5,9 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
-
 ## [0.3.0] - 2026-09-21
+
+Thanks to [@phycrax](https://github.com/phycrax) for multiwrite support
+([#3](https://github.com/ra1u/embedded-storage-file/pull/3)), NOR semantics
+([#4](https://github.com/ra1u/embedded-storage-file/pull/4)), and dependency updates
+([#5](https://github.com/ra1u/embedded-storage-file/pull/5)).
 
 ### Added
 
@@ -32,7 +35,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - `Debug` implementation for all public types (`NorMemory`, `NorStorage`,
-  `MmapFile`, `NorMemoryAsync`). Thanks to @Wojciech-Graj (#2).
+  `MmapFile`, `NorMemoryAsync`). Thanks to
+  [@Wojciech-Graj](https://github.com/Wojciech-Graj)
+  ([#2](https://github.com/ra1u/embedded-storage-file/pull/2)).
 - GitHub Actions CI workflow running `cargo fmt --check`, `cargo clippy -D warnings`,
   build, test and `cargo doc` on every push and pull request.
 - Manually-triggered GitHub Actions workflow for publishing the crate to
