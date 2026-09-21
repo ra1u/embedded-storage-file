@@ -12,6 +12,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   for `NorMemoryInram`, `NorMemoryInFile` and their `NorMemoryAsync` wrappers.
   This allows using them with `RmwMultiwriteNorFlashStorage` and other consumers
   that require multiwrite-capable NOR flash.
+### Changed
+- `NorFlash::write` now follows NOR semantics and stores the
+  bitwise AND of the existing content and the written data (bits can only change
+  from 1 to 0). Previously it overwrote the content unconditionally. Erase a block
+  to set bits back to 1.
+- `NorMemoryInram::new` now initialises memory to the erased
+  value `0xFF` instead of `0x00`, matching `NorMemoryInFile`.
 
 ## [0.2.0] - 2026-04-24
 

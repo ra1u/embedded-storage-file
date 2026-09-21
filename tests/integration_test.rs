@@ -1,3 +1,5 @@
+use embedded_storage::nor_flash::NorFlash as NorFlashSync;
+use embedded_storage::nor_flash::ReadNorFlash as ReadNorFlashSync;
 use embedded_storage::nor_flash::RmwMultiwriteNorFlashStorage;
 use embedded_storage::{ReadStorage, Storage};
 use embedded_storage_async::nor_flash::NorFlash as NorFlashAsync;
@@ -88,6 +90,44 @@ fn test_multiwrite_storage_sync() {
     storage.write(0, &vin2).unwrap();
     storage.read(0, &mut vread).unwrap();
     assert_eq!(vin2, vread);
+}
+
+#[test]
+fn test_fresh_inram_is_erased() {
+    let mem_len = 4096_usize;
+    let mut nor = NorMemoryInram::<256, 256, 256>::new(mem_len);
+    let mut vread = vec![0u8; mem_len];
+    nor.read(0, &mut vread).unwrap();
+    assert!(vread.iter().all(|&b| b == 0xFF));
+}
+
+#[test]
+fn test_write_and_semantics() {
+    let mut nor = NorMemoryInram::<256, 256, 256>::new(4096);
+    let block = 256_u32; // second erase block
+    let mut vread = vec![0u8; 256];
+
+    // fresh device is erased: write is stored as-is
+    nor.write(block, &[0xF0u8; 256]).unwrap();
+    nor.read(block, &mut vread).unwrap();
+    assert!(vread.iter().all(|&b| b == 0xF0));
+
+    // second write to the same block: result is the AND of old and new
+    nor.write(block, &[0x0Fu8; 256]).unwrap();
+    nor.read(block, &mut vread).unwrap();
+    assert!(vread.iter().all(|&b| b == 0x00));
+
+    // bits can only go back to 1 through erase
+    nor.write(block, &[0xFFu8; 256]).unwrap();
+    nor.read(block, &mut vread).unwrap();
+    assert!(vread.iter().all(|&b| b == 0x00));
+    nor.erase(block, block + 256).unwrap();
+    nor.read(block, &mut vread).unwrap();
+    assert!(vread.iter().all(|&b| b == 0xFF));
+
+    // neighbouring blocks untouched
+    nor.read(0, &mut vread).unwrap();
+    assert!(vread.iter().all(|&b| b == 0xFF));
 }
 
 // Generate a random vector of bytes given a size and a seed.
