@@ -8,11 +8,11 @@ repository = "https://github.com/ra1u/embedded-storage-file.git"
 description = "file and in-memory interface for embedded-storage and embedded-storage-async"
 
 [dependencies]
-embedded-storage = ">=0.3.1, <0.4"
-embedded-storage-async = ">=0.4.1, <0.5"
-memmap2 = ">=0.5, <0.10"
+embedded-storage = "0.3.2"
+embedded-storage-async = "0.4.2"
+memmap2 = "0.9.11"
 
 [dev-dependencies]
-rand = ">=0.9, <0.10"
+rand = "0.10.3"
 # runtime for async testing
-tokio = { version = ">=1, <2", default-features = false, features = ["rt", "macros"] }
+tokio = { version = "1.53.1", default-features = false, features = ["rt", "macros"] }

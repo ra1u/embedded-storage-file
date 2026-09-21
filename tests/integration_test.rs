@@ -2,7 +2,7 @@ use embedded_storage::{ReadStorage, Storage};
 use embedded_storage_async::nor_flash::NorFlash;
 use embedded_storage_async::nor_flash::ReadNorFlash;
 use embedded_storage_file::{NorMemoryAsync, NorMemoryInFile, NorMemoryInram};
-use rand::Rng;
+use rand::RngExt;
 use rand::SeedableRng;
 
 #[test]
